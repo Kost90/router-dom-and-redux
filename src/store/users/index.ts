@@ -2,10 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
 import JsonPlaceholderAPI, { User } from '../../api/JsonPlaceholderAPI/JsonPlaceholderAPI'
 
-
-export interface update {
-  name: string
-  email: string
+interface UpdateUserPayload {
+  id: number
+  updates: Partial<User>
 }
 
 const initialUsers: User[] = []
@@ -16,10 +15,10 @@ export const fetchUsers = createAsyncThunk<User[]>('users/fetchUsers', async () 
   return await JsonPlaceholderAPI.getUsers({ signal })
 })
 
-export const updateUser = createAsyncThunk('users/updateUser', async (id:number, updates) => {
+export const updateUser = createAsyncThunk('users/updateUser', async ({ id, updates }: UpdateUserPayload) => {
   const controller = new AbortController()
   const signal = controller.signal
-  return await JsonPlaceholderAPI.updateUser({ id, signal, updates }) as User
+  return (await JsonPlaceholderAPI.updateUser({ id, signal, updates })) as User
 })
 
 export const usersSlice = createSlice({
@@ -69,6 +68,6 @@ export const usersSlice = createSlice({
   },
 })
 
-export const {addUser, deleteUser, changeUser} = usersSlice.actions
-export const selectUsers = (state:RootState) => state.users.users
-export const selectUser = (state: RootState, id: number) => state.users.users.find(user => user.id === id)
+export const { addUser, deleteUser, changeUser } = usersSlice.actions
+export const selectUsers = (state: RootState) => state.users.users
+export const selectUser = (state: RootState, id: number) => state.users.users.find((user) => user.id === id)

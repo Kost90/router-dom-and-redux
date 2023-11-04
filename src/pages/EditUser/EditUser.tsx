@@ -12,12 +12,11 @@ const EditUser = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
-  const handelEdit = (e) => {
+  const handelEdit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const formData = new FormData(e.target)
+    const formData = new FormData(e.currentTarget)
     const updates = Object.fromEntries(formData.entries())
-    // не могу понять почему пишет ошибку?
-    dispatch(updateUser(Number(id), updates))
+    dispatch(updateUser({id: Number(id), updates}))
     navigate('/users')
   }
 

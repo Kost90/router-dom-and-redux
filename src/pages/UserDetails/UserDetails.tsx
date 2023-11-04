@@ -20,7 +20,6 @@ const UserDetails = () => {
   const user = useAppSelector((state) => selectUser(state, Number(id)))
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  console.log(id)
 
   const handelDelete = () => {
     dispatch(deleteUser(Number(id)))
